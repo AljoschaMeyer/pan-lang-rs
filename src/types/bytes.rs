@@ -13,3 +13,9 @@ pub struct Bytes {
     end: usize, // exclusive
     // invariant: start and end are always < data.len()
 }
+
+impl Bytes {
+    pub fn from_slice(b: &[u8]) -> Bytes {
+        unimplemented!()
+    }
+}

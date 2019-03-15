@@ -23,6 +23,14 @@ The immutable value types are `nil`, `bool`, `int`, `float`, `char` and `string`
 
 ### Futures
 
+Note: This is already slightly out of date. TODO:
+
+- merge all end states into single *done* state
+- fut_run takes additional arg on_abort: When the future itself encounters an error (e.g. mapping function throws, chain function throws or returns a non-future)
+- add leaf future `fut_thunk` that calls the thunk when it transitions to *pending*
+- add function `fut_block` to stop execution of the main thread until the future is done
+- decide on camelCase vs snake_case...
+
 Pan is a single-threaded language. Instructions are executed sequentially until the last instruction has been reached, the program then terminates. While this model is suitable for batch computations, it does not work for programs that need to interact with the outside world. To support interactive programs, pan provides an event loop. Events from outside (and inside) the computer are queued up in the event loop. A pan program can request to be notified of such events. Futures provide this interface to the event loop.
 
 #### Lifecycle
@@ -185,23 +193,3 @@ Returns a parent future that settles like the first child future in the array `a
 
 Throws a *type error* if `a` or `b` is not a future.
 Throws a *future state error* if `a` or `b` is not *inert*.
-
-#### Leaf Futures
-
-Leaf futures are futures that settle due to some outside event. Native modules can provide leaf futures for e.g. timers or inter-process communication. Pan provides three built-in leaf futures which are deterministic (i.e. non-effectful).
-
-##### `fut_never([onCancelled])`
-
-Returns a future that never settles. If it doesn't get cancelled, it never advances beyond the *pending* state. If/when the future is cancelled, `onCancelled` is called.
-
-###### Errors
-
-Throws a *type error* if `fn` is neither a function nor `nil`.  
-
-##### `fut_resolve(x)`
-
-Returns a future that upon being run immediately resolves to `x`.
-
-##### `fut_reject(x)`
-
-Returns a future that upon being run immediately rejects to `x`.

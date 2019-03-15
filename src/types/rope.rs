@@ -4,3 +4,9 @@ use gc_derive::{Trace, Finalize};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Trace, Finalize)]
 pub struct Rope(String); // TODO use actual ropes (but keep String for small strings), make sure cloning is very cheap!
+
+impl Rope {
+    pub fn from_str(s: &str) -> Rope {
+        unimplemented!()
+    }
+}

@@ -11,6 +11,7 @@ use crate::types::{
     rope::Rope,
     bytes::Bytes,
 };
+use crate::ir::IrClosure;
 
 /// Runtime representation of an arbitrary pan value.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Trace, Finalize)]
@@ -25,6 +26,7 @@ pub enum Value {
     Array(Gc<GcCell<Vec<Value>>>),
     Set(Gc<GcCell<BTreeSet<Value>>>),
     Map(Gc<GcCell<BTreeMap<Value, Value>>>),
+    Fun(Fun),
 }
 // TODO functions, futures, userdata (light and/or managed?)
 
@@ -44,4 +46,9 @@ impl Value {
     pub fn apply(&self, arg: &[Value]) -> Result<Value, Value> {
         unimplemented!()
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Trace, Finalize)]
+pub enum Fun {
+    Pan(IrClosure),
 }
